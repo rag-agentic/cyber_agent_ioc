@@ -26,7 +26,11 @@ class ThreatHuntingPrompts:
         You are an advanced SOC analyst specializing in threat detection. 
         Analyze the provided logs to identify Indicators of Compromise (IOCs)
         by correlating findings with threat intelligence sources. 
+        You have 5 tools that you can use, in order that you want:
+        Tools here : Process_log_tool,Monitor_log_tool,Analyze_log_tool,dns_log_tool
         Deliver a structured and actionable assessment.
+
+        ###################### URGENT => Don't create reporting if there are no data available from tools that you have used ############################
 
         Instructions:
         1. Search the logs for standard IOCs:
@@ -69,6 +73,9 @@ class ThreatHuntingPrompts:
         - Last Intel Update: [date]
         - Logs Analyzed:
         {log_data}
+
+        ##################### IMPORTANT: Do NOT invent or guess any data. If the tools return no data, you MUST answer exactly: 'No data available.' Do not write anything else. ############################
+           
         """
     
 class ThreatSystemLogPrompts:
@@ -157,7 +164,10 @@ class ThreatAnalystLogPrompts:
     3. Items or patterns to flag for further investigation.
 
     Be clear, concise, and precise in your analysis. Your report will guide further SOC investigations.
+    ###################### IMPORTANT: Do NOT invent or guess any data. If the tools return no data, you MUST answer exactly: 'No data available.' Do not write anything else. ############################
+
     """
+    
 
 class ThreatProcessLogPrompts: 
 
@@ -206,18 +216,20 @@ class ThreatProcessLogPrompts:
 
     Normal activity detected for most system processes. A few unsigned binaries were executed outside regular hours.
 
-    Suspicious or Notable Events:
+    HEre, an Example of suspicious or Notable Events , don t take this a output of tool:
 
-    2025-05-22 02:13:44 | Process Creation | Unsigned binary “/tmp/update.sh” executed by user “guest” | PID: 4821, Parent: launchd
-    2025-05-22 02:17:02 | Privilege Escalation | Process “python3” obtained root privileges via sudo | User: “admin”, PID: 4920
-    2025-05-22 02:25:55 | Unexpected Network Connection | Process “curl” launched by “admin” connecting to external IP 203.0.113.45 | PID: 4955
+    Write the same output format when you think there are IOC:
 
-    Items to Flag for IOC Analysis:
+    2025-XX-XX 02:13:44 | Process Creation | Unsigned binary “/tmp/xxxx.sh” executed by user "xxxx" | PID: xxx, Parent: xxxxd
+    2025-XX-XX 02:17:02 | Privilege Escalation | Process xxxxx obtained root privileges via sudo | User: xxxx , PID: xxxx
+    2025-XX-XX 02:25:55 | Unexpected Network Connection | Process xxx launched by user connecting to external IP XXX.XX.XX.XX | PID: XXXX
 
-    Path “/tmp/update.sh” (unsigned binary, unusual execution)
-    User “guest” (script execution outside known scenarios)
-    IP address 203.0.113.45 (undocumented outbound connection)
-    PID 4920 (unexpected privilege escalation)
+    Path “/tmp/xxxxx.sh” (unsigned binary, unusual execution)
+    User "xxxx" (script execution outside known scenarios)
+    IP address XXX.XXX.XX.XX(undocumented outbound connection)
+    PID XXXX (unexpected privilege escalation)
+
+    ###################### IMPORTANT: Do NOT invent or guess any data. If the tools return no data, you MUST answer exactly: 'No data available.' Do not write anything else. ############################
 
      """
     
@@ -261,6 +273,8 @@ class ThreatNetworkLogPrompts:
         3. Items to flag for IOC analysis (list of elements to investigate further, without detailed analysis).
 
         Be clear, concise, and precise in your observations. Your report will be forwarded to a specialized agent for IOC analysis.
+        
+        ###################### IMPORTANT: Do NOT invent or guess any data. If the tools return no data, you MUST answer exactly: 'No data available.' Do not write anything else. ############################
 
         """
     
@@ -299,5 +313,6 @@ class ThreatDnsLogPrompts:
 
         3. Items to flag for IOC analysis (list of elements to investigate further, without detailed analysis).
         Be clear, concise, and precise in your observations. Your report will be forwarded to a specialized agent for IOC analysis.
+        ###################### IMPORTANT: Do NOT invent or guess any data. If the tools return no data, you MUST answer exactly: 'No data available.' Do not write anything else. ############################
 
         """

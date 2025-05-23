@@ -115,7 +115,9 @@ async def cyber_agent_ioc_workflow(config: CyberAgentIOCWorkflowConfig, builder:
 
     async def getlog_assistant(state: MessagesState):
         result = await systemlog_tool.arun({"last_time": 3})
+        print("===================================================================================")
         state["system_log_tool_result"] = result
+        print("===================================================================================")
         return state
 
     # Add nodes to graph

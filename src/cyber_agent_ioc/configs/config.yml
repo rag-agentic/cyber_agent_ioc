@@ -17,6 +17,17 @@
 
 general:
   use_uvloop: true
+  general:
+  telemetry:
+    logging:
+      file:
+        _type: file
+        path: /tmp/aiq_run.log
+        level: DEBUG
+      console:
+        _type: console
+        level: INFO
+
   
 functions:
   system_log_tool:
@@ -28,7 +39,7 @@ functions:
     _type: process_log_tool
     llm_name: tool_reasoning_llm
     description: "Search for indice of compromission in list of process running on Macos 15.4.1"
-    timeout: 5
+    timeout: 6
     filter: ""
   network_log_tool:
     _type: network_log_tool
@@ -51,18 +62,18 @@ llms:
     _type: nim
     model_name: nvidia/llama-3.1-nemotron-ultra-253b-v1
     temperature: 0.6
-    max_tokens: 250
+    max_tokens: 2048
 
   tool_reasoning_llm:
     _type: nim
     model_name: nvidia/llama-3.1-nemotron-ultra-253b-v1
-    temperature: 0.4
-    max_tokens: 500
+    temperature: 0.2
+    max_tokens: 2048
 
 workflow:
   _type: cyber_agent_ioc
   tool_names: [ system_log_tool, process_log_tool, network_log_tool, dns_log_tool, analyze_tool  ]
   llm_name: nim_llm
-  max_iterations: 3
-  max_retries: 3
+  max_iterations: 5
+  max_retries: 5
   description: "Cyber IA agent, the goal is to find unknown ioc  in macos system"
