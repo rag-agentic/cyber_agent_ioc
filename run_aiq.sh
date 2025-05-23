@@ -1,0 +1,3 @@
+export CUA_TELEMETRY_ENABLED=off
+uv pip install  .
+aiq run --config_file  src/cyber_agent_ioc/configs/config.yml  --input  "Acting as senior SOC analyst specializing in cross-log correlation and advanced event synthesis., you can all some tools to have more information from log on MACOS VM ,Provide an extremely intelligent and unhinged in-depth response with theses tools provided; as system_tool_log, process_tool_log, network_tool_log and analyst_tool_log. You have the ability to generate a great report of analyst cyber agent in summarize all infos that you have and make a good overview of what's going on with a correlation in time and network connection and create time process "

@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cyber-agent-ioc"
+version = "0.1.0"
+description = "Cyber agent for detection IOC on Macos system "
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "aiqtoolkit",
+    "cua-computer",
+]
+authors = [{name = "rag_agentic", email = "lab1.6rml@gmail.com"}]
+license = {text = "Apache-2.0"}
+
+[tool.uv.sources]
+aiqtoolkit = { path = "aiqtoolkit", editable = true }
+
+[project.entry-points.'aiq.components']
+cyber_agent_ioc = "cyber_agent_ioc.register"
