@@ -18,11 +18,33 @@
 general:
   use_uvloop: true
   
-functions: 
+functions:
+  system_log_tool:
+    _type: system_log_tool
+    llm_name: tool_reasoning_llm
+    description: "Search for indice of compromission in system log running on Macos 15.4.1"
+    last_n: 3
   process_log_tool:
     _type: process_log_tool
     llm_name: tool_reasoning_llm
-    description: 'Sea'
+    description: "Search for indice of compromission in list of process running on Macos 15.4.1"
+    timeout: 5
+    filter: ""
+  network_log_tool:
+    _type: network_log_tool
+    llm_name: tool_reasoning_llm
+    description: "Search for indice of compromission in network list running on Macos 15.4.1"
+    interface: em0
+    ct_packet: 10
+    timeout: 5
+  dns_log_tool:
+     _type: dns_log_tool
+     llm_name: tool_reasoning_llm
+     timeout: 5
+  analyze_tool:
+    _type: analyze_tool
+    llm_name: tool_reasoning_llm
+    description: "Analyze, resume all events, ioc from others tools like system_log_tool,process_log_tool,network_log_tool "
 
 llms:
   nim_llm:
@@ -39,7 +61,7 @@ llms:
 
 workflow:
   _type: cyber_agent_ioc
-  tool_names: [ process_log_tool ]
+  tool_names: [ system_log_tool, process_log_tool, network_log_tool, dns_log_tool, analyze_tool  ]
   llm_name: nim_llm
   max_iterations: 3
   max_retries: 3

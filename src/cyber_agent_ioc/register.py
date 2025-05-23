@@ -38,6 +38,11 @@ from aiq.data_models.component_ref import LLMRef
 from aiq.data_models.function import FunctionBaseConfig
 
 from . import system_log_tool
+from . import process_log_tool
+from . import network_log_tool
+from . import analyze_log_tool
+from . import dns_log_tool
+
 from .prompt import ThreatHuntingPrompts
 from .configs import VM_NAME
 from .utils import check_vm_running

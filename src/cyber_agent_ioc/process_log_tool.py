@@ -53,16 +53,13 @@ class ProcessLogToolConfig(FunctionBaseConfig, name="process_log_tool"):
                  "Requires a the param (time last x minute ) Args: last_time: str"),
         description="Description of the tool for the agent.")
     llm_name: LLMRef
-    pass
-    """
     timeout: Optional[int] = Field(
         None,
         description="The number of seconds to wait before returning data, ensuring all relevant events are captured."
     )
     filter: Optional[str] = Field(default="")
     pass
-    """
-
+    
 @register_function(config_type=ProcessLogToolConfig, framework_wrappers=[LLMFrameworkEnum.LANGCHAIN])
 async def process_log_tool(config:ProcessLogToolConfig, builder: Builder):
     """
@@ -92,8 +89,7 @@ async def process_log_tool(config:ProcessLogToolConfig, builder: Builder):
             current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             #CAll the tool for get system log 
-            #list_process = await get_live_process_monitor(config.timeout,config.filter)
-            list_process = await get_live_process_monitor()
+            list_process = await get_live_process_monitor(config.timeout,config.filter)
             logger.debug(list_process)
 
             output_for_prompt = f"Here the process running at {current_time}. Here the log: {list_process}"
