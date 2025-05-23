@@ -46,8 +46,9 @@ lume stop macos-sequoia-cua_latest
 # Verify the library installation:
 aiq --help
 aiq --version
+cd ..
 uv pip install  ./aiqtoolkit/'.[langchain]'
-uv pip install -e ./aiqtoolkit/'.[profiling]'
+uv pip install  ./aiqtoolkit/'.[profiling]'
 uv pip install  ./src/cyber_agent_ioc/''
 ```
 
