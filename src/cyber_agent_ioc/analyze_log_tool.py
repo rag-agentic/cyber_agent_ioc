@@ -90,8 +90,7 @@ async def analyze_tool(config:AnalyzeToolConfig, builder: Builder):
         
             chain = prompt | llm
             result = await chain.ainvoke({"msgs": [HumanMessage(content=user_prompt)]})
-            print("###########################@")
-            logger.info(result.content)
+            logger.debug(result.content)
 
             return result.content
         except Exception as e:
