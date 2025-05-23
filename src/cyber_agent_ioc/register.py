@@ -41,16 +41,16 @@ from aiq.data_models.function import FunctionBaseConfig
 from langgraph.prebuilt import ToolNode
 from aiq.profiler.decorators.function_tracking import track_function
 
-from . import system_log_tool
-from . import process_log_tool
-from . import network_log_tool
-from . import analyze_log_tool
-from . import dns_log_tool
-from . import ip_compromise_tool
+from cyber_agent_ioc import system_log_tool
+from cyber_agent_ioc import process_log_tool
+from cyber_agent_ioc import network_log_tool
+from cyber_agent_ioc import analyze_log_tool
+from cyber_agent_ioc import dns_log_tool
+from cyber_agent_ioc import ip_compromise_tool
 
-from .prompt import ThreatHuntingPrompts
-from .configs import VM_NAME
-from .utils import check_vm_running
+from cyber_agent_ioc.prompt import ThreatHuntingPrompts
+from cyber_agent_ioc.config_settings import VM_NAME
+from cyber_agent_ioc.utils import check_vm_running
 import sys
 
 logger = logging.getLogger(__name__)

@@ -30,7 +30,7 @@ import subprocess
 import select
  
 
-from .configs import (
+from cyber_agent_ioc.config_settings import (
     HOSTNAME,
     USER,
     SSH_KEY_PATH,
@@ -261,12 +261,12 @@ async def get_network_traffic(interface="en0", ct_packet=1, timeout=5):
     return result
 
 
-async def get_live_dns_traffic(timeout=5):
+async def get_live_dns_traffic(timeout=8):
     dns_monitor_cmd = "sudo /Applications/DNSMonitor.app/Contents/MacOS/DNSMonitor"
     result = run_cmd_vm_timeout(dns_monitor_cmd, timeout=timeout)
     return result
 
-async def get_live_process_monitor(timeout=5, filter=""):
+async def get_live_process_monitor(timeout=7, filter=""):
     if filter:
         process_monitor_cmd = (
             f"sudo /Applications/ProcessMonitor.app/Contents/MacOS/ProcessMonitor --pretty --filter {filter}"
@@ -282,9 +282,9 @@ async def main():
         check_vm_running(VM_NAME)
         #await get_system_logs_test(1)
         result  = run_cmd_vm('ls -l')
-        result = await get_system_logs_ssh()
+        result = await get_live_system_logs(5)
         print(result)
-        result = await get_network_traffic(ct_packet=10)
+        result = await get_live_network_traffic(ct_packet=10)
         print(result)
         result = await get_live_dns_traffic()
         print(result)

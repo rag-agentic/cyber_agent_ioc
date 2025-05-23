@@ -35,7 +35,7 @@ from langchain_core.prompts import MessagesPlaceholder
 from langchain_core.messages import SystemMessage, HumanMessage
 
 
-from .prompt import ThreatAnalystLogPrompts
+from cyber_agent_ioc.prompt import ThreatAnalystLogPrompts
  
 
 logger = logging.getLogger(__name__)

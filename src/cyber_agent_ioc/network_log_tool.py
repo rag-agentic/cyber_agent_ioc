@@ -35,8 +35,8 @@ from langchain_core.prompts import MessagesPlaceholder
 from langchain_core.messages import SystemMessage, HumanMessage
 
 
-from .prompt import ThreatNetworkLogPrompts
-from .utils import get_live_network_traffic
+from cyber_agent_ioc.prompt import ThreatNetworkLogPrompts
+from cyber_agent_ioc.utils import get_live_network_traffic
 
 logger = logging.getLogger(__name__)
 

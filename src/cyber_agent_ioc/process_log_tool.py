@@ -35,8 +35,8 @@ from langchain_core.prompts import MessagesPlaceholder
 from langchain_core.messages import SystemMessage, HumanMessage
 from typing import  Literal,Optional
 
-from .prompt import ThreatProcessLogPrompts
-from .utils import get_live_process_monitor
+from cyber_agent_ioc.prompt import ThreatProcessLogPrompts
+from cyber_agent_ioc.utils import get_live_process_monitor
 
 logger = logging.getLogger(__name__)
 
