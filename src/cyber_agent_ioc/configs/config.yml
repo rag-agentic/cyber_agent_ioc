@@ -65,3 +65,4 @@ workflow:
   llm_name: nim_llm
   max_iterations: 3
   max_retries: 3
+  description: "Cyber IA agent, the goal is to find unknown ioc  in macos system"

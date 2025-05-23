@@ -30,18 +30,23 @@ from langchain_core.runnables import RunnableConfig
 from aiq.builder.builder import Builder
 from langgraph.graph import MessagesState
 from langgraph.graph import StateGraph
+from langgraph.graph import START
+from langgraph.prebuilt import tools_condition
 
 from aiq.builder.framework_enum import LLMFrameworkEnum
 from aiq.builder.function_info import FunctionInfo
 from aiq.cli.register_workflow import register_function
 from aiq.data_models.component_ref import LLMRef
 from aiq.data_models.function import FunctionBaseConfig
+from langgraph.prebuilt import ToolNode
+from aiq.profiler.decorators.function_tracking import track_function
 
 from . import system_log_tool
 from . import process_log_tool
 from . import network_log_tool
 from . import analyze_log_tool
 from . import dns_log_tool
+from . import ip_compromise_tool
 
 from .prompt import ThreatHuntingPrompts
 from .configs import VM_NAME
@@ -75,8 +80,6 @@ async def cyber_agent_ioc_workflow(config: CyberAgentIOCWorkflowConfig, builder:
 
     # Create the agent executor
     tool_names = builder.get_tools(tool_names=config.tool_names, wrapper_type=LLMFrameworkEnum.LANGCHAIN)
-    #print(tool_names)
-    #tools = []
     #for tool_name in tool_names:
     #    tool = builder.get_tool(tool_name, wrapper_type=LLMFrameworkEnum.LANGCHAIN)
     #    tools.append(tool)
@@ -89,19 +92,56 @@ async def cyber_agent_ioc_workflow(config: CyberAgentIOCWorkflowConfig, builder:
     """
     llm_n_tools = llm.bind_tools(tool_names, parallel_tool_calls=True)
     
-    # On récupère deux outils spécifiques  ici system_log_tool
-    system_tool = builder.get_tool("system_log_tool", wrapper_type=LLMFrameworkEnum.LANGCHAIN)
+    # Call the main LLM  of workflow 
+    async def cyber_agent_ioc_assistant(state: MessagesState):
+        # Create system message with prompt
+        sys_msg = SystemMessage(content=ThreatHuntingPrompts.SYSTEM_DESCRIPTION_PROMPT)
+        # Invoke LLM with system message and conversation history
+        return {"messages": [await llm_n_tools.ainvoke([sys_msg] + state["messages"])]}
+    
     state = MessagesState(messages=[HumanMessage(content="Ma première alerte")])
 
-    sys_msg = SystemMessage(content=ThreatHuntingPrompts.SYSTEM_DESCRIPTION_PROMPT)
-    resultat = {"messages": [await llm_n_tools.ainvoke([sys_msg] + state["messages"])]}
-    print("resulat", resultat)
+    #sys_msg = SystemMessage(content=ThreatHuntingPrompts.SYSTEM_DESCRIPTION_PROMPT)
+    #resultat = {"messages": [await llm_n_tools.ainvoke([sys_msg] + state["messages"])]}
+    #print("resulat", resultat)
 
     llm = await builder.get_llm(config.llm_name, wrapper_type=LLMFrameworkEnum.LANGCHAIN)
+    # On récupère deux outils spécifiques  ici system_log_tool
+    systemlog_tool = builder.get_tool("system_log_tool", wrapper_type=LLMFrameworkEnum.LANGCHAIN)
+    
+    #Build graph
+    builder_graph = StateGraph(MessagesState)
+    tool_names = builder.get_tools(tool_names=config.tool_names, wrapper_type=LLMFrameworkEnum.LANGCHAIN)
 
+    async def getlog_assistant(state: MessagesState):
+        result = await systemlog_tool.arun({"last_time": 3})
+        state["system_log_tool_result"] = result
+        return state
+
+    # Add nodes to graph
+    builder_graph.add_node("getlog_assistant", getlog_assistant)
+    builder_graph.add_node("cyber_agent_ioc_assistant", cyber_agent_ioc_assistant)
+    builder_graph.add_node("tools", ToolNode(tool_names))
+    
+    # Define graph edges to control conversation flow
+    builder_graph.add_edge(START, "getlog_assistant")
+    builder_graph.add_conditional_edges(
+        "cyber_agent_ioc_assistant",
+        tools_condition,
+    )
+    builder_graph.add_edge("tools", "cyber_agent_ioc_assistant")
+    builder_graph.add_edge("getlog_assistant", "cyber_agent_ioc_assistant")
+
+    # Compile graph into executable agent
+    agent_executor = builder_graph.compile()
+
+    @track_function()
     async def _process_analyze_ioc(input_message: str) -> str:
-        result = await system_tool._arun(3, config=RunnableConfig())
-        return "OK"
+    #    result = await system_tool._arun(3, config=RunnableConfig())
+    #    return "OK"
+        output = await agent_executor.ainvoke({"messages": [HumanMessage(content=input_message)]})
+        result = output["messages"][-1].content
+        return result
     
     async def _response_fn(input_message: str) -> str:
         """Process alert message and return analysis with recommendations."""
