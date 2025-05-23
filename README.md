@@ -50,13 +50,18 @@ cd ..
 uv pip install  ./aiqtoolkit/'.[langchain]'
 uv pip install  ./aiqtoolkit/'.[profiling]'
 uv pip install  ./src/cyber_agent_ioc/''
+
+On the VM, you need to install the following tools: tcpdump, ProcessMonitor, and DNSMonitor.
 ```
 
 ### TODO LIST
 
-- Add an MCP client to query the VirusTotal site and use the MCP VirusTotal server.
-- Add an MCP client to check YARA rules on running processes and trigger analysis in case of suspicion.
-- Improve the prompts to better target the analyses.
-- Use tools other than SSH, such as a global session with the Computer tool; the problem is that launching the VM takes time or it must always be running, even when the agent is stopped.
-- Use AI agents from [c/ua](https://github.com/trycua/) project to collaborate together.
+- Sometimes, the model hallucinates and shows false positive IOCs.
+- On a VM, additional tools such as DTrace/dtruss can be used to monitor and analyze system behavior.
+- Create an isolated VM from a network perspective, and run malware to test whether the model can detect malicious activities.
+- Add an MCP client to query the VirusTotal service and interact with the MCP VirusTotal server.
+- Add an MCP client to check YARA rules on running processes and trigger further analysis in case of suspicious findings.
+- Improve the prompts to better target and refine the analyses.
+- Use tools other than SSH, such as establishing a global session with the Computer tool. Note that launching the VM can be time-consuming, or the VM must remain running even when the agent is stopped.
+- Integrate AI agents from the [c/ua](https://github.com/trycua/) project to enable collaborative analysis.
 
