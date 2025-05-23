@@ -30,7 +30,6 @@ class ThreatHuntingPrompts:
         Tools here : Process_log_tool,Monitor_log_tool,Analyze_log_tool,dns_log_tool
         Deliver a structured and actionable assessment.
 
-        ###################### URGENT => Don't create reporting if there are no data available from tools that you have used ############################
 
         Instructions:
         1. Search the logs for standard IOCs:
@@ -72,10 +71,8 @@ class ThreatHuntingPrompts:
         - Referenced Threat Intel Source: [MITRE ATT&CK / CrowdStrike / ...]
         - Last Intel Update: [date]
         - Logs Analyzed:
-        {log_data}
-
+        {log_data}           
         ##################### IMPORTANT: Do NOT invent or guess any data. If the tools return no data, you MUST answer exactly: 'No data available.' Do not write anything else. ############################
-           
         """
     
 class ThreatSystemLogPrompts:
@@ -94,7 +91,7 @@ class ThreatSystemLogPrompts:
 
     USER_INSTRUCTIONS_PROMPT = """
         Your mission is to analyze system logs retrieved from a macOS virtual machine.
-
+                
         You have a tool to retreive log system, you can call this : system_log_tool(last_n), last_n, represents the last_n minutes of  system log
         - Review the logs to identify any suspicious or notable events (e.g., unusual SSH logins, failed login attempts, privilege escalations, unexpected process executions, etc.).
         - Do NOT perform in-depth analysis of IOCs (such as hashes, network indicators, etc.). Simply highlight any elements that may require further investigation by a dedicated IOC analysis agent.
@@ -109,26 +106,30 @@ class ThreatSystemLogPrompts:
         3. Items to flag for IOC analysis (a list of elements that should be investigated further, without detailed analysis).
 
         Be clear, concise, and precise in your observations. Your report will be forwarded to a specialized agent for IOC analysis.
-
+        ###################### IMPORTANT: Do NOT invent or guess any data. If the tools return no data, you MUST answer exactly: 'No data available.' Do not write anything else. ############################
+        """
+    
+    """  
         here a example of report, that you must show with our trace.The example given below, is just for example, don't copy it on output.
+         Example of suspicious or Notable Events, don "t take this in account, it 's just for the format:
+         Example of suspicious or Notable Events, don "t take this in account, it 's just for the format:
         General Summary:
             - Normal network activity observed, with a few SSH connections outside regular hours.
-
-            Suspicious or Notable Events:
-            - 2025-05-21 03:45:12 | SSH Login | Login from external IP 192.168.1.45 by user 'admin' | Process: sshd
-            - 2025-05-21 04:02:30 | Failed Login Attempts | 5 failed attempts for user 'root' | Source IP: 10.0.0.5
+          
+            - 2025-05-21 03:45:12 | SSH Login | Login from external IP XX.XX.XX.XX by user 'XXX' | Process: XXX
+            - 2025-05-21 04:02:30 | Failed Login Attempts | X failed attempts for user 'root' | Source IP: XXX.XX.XX.XX
 
             Items to Flag for IOC Analysis:
-            - IP address 192.168.1.45 (unusual SSH login)
-            - Username 'root' (multiple failed login attempts)
+            - IP address XXX.XX.XX.XX (unusual SSH login)
+            - Username 'XXX' (multiple failed login attempts)
             - Unknown process hash detected at 04:05:12
-        """
+    """
 
 class ThreatAnalystLogPrompts: 
 
     SYSTEM_INSTRUCTIONS_PROMPT ="""
 
-        You are a senior SOC analyst specializing in cross-log correlation and advanced event synthesis.
+        ###################### IMPORTANT:  You are a senior SOC analyst specializing in cross-log correlation and advanced event synthesis.
 
     Your responsibilities:
         Analyze and synthesize events from multiple log sources (system, process, network, DNS, etc.) provided by other agents.
@@ -145,7 +146,8 @@ class ThreatAnalystLogPrompts:
     """
 
     USER_INSTRUCTIONS_PROMPT= """
-    Your mission is to synthesize and correlate security events from multiple log sources (system, process, network, DNS, etc.) collected from a macOS virtual machine.
+
+    ###################### IMPORTANT: Your mission is to synthesize and correlate security events from multiple log sources (system, process, network, DNS, etc.) collected from a macOS virtual machine.
     Review all events and findings provided by other agents.
     Correlate events based on timestamps, user accounts, IP addresses, process names, and other relevant artifacts.
     Identify links between seemingly unrelated events (e.g., a process launching just after an SSH login, a DNS query followed by a network connection, etc.).
@@ -202,22 +204,19 @@ class ThreatProcessLogPrompts:
 
     Timestamp
     Event type (creation, modification, termination, etc.)
-    
     Brief description
     Contextual information (user, binary path, arguments, PID, parent process, etc.)
+    """
 
+    """
     3. Items to flag for IOC analysis (a list of elements to be further investigated, without detailed analysis).
 
     Be clear, concise, and precise in your observations. Your synthesis will be forwarded to a specialized agent for IOC analysis.
-
-    xample of Expected Report
+    Example of Expected Report
 
     General Summary:
-
     Normal activity detected for most system processes. A few unsigned binaries were executed outside regular hours.
-
     HEre, an Example of suspicious or Notable Events , don t take this a output of tool:
-
     Write the same output format when you think there are IOC:
 
     2025-XX-XX 02:13:44 | Process Creation | Unsigned binary “/tmp/xxxx.sh” executed by user "xxxx" | PID: xxx, Parent: xxxxd
@@ -228,9 +227,6 @@ class ThreatProcessLogPrompts:
     User "xxxx" (script execution outside known scenarios)
     IP address XXX.XXX.XX.XX(undocumented outbound connection)
     PID XXXX (unexpected privilege escalation)
-
-    ###################### IMPORTANT: Do NOT invent or guess any data. If the tools return no data, you MUST answer exactly: 'No data available.' Do not write anything else. ############################
-
      """
     
 class ThreatNetworkLogPrompts:
@@ -260,6 +256,7 @@ class ThreatNetworkLogPrompts:
         timeout in second represent, the duration of the acquisition and process_name represents the name of the process that 
         you think it"s suspicous and in order to filter on all logs.
 
+        SSH Connexion between 192.168.65.4 and 
         Structure your report as follows:
 
         1. General summary of recent network activity.

@@ -89,7 +89,7 @@ async def system_log_tool(config:SystemLogToolConfig, builder: Builder):
             if not config.last_n:
                 lasttime = 1
             lasttime = config.last_n
-            print("LAsttime = ",lasttime)
+            #print("LAsttime = ",lasttime)
             # Get the language model
             llm = await builder.get_llm(config.llm_name, wrapper_type=LLMFrameworkEnum.LANGCHAIN)
 
@@ -97,7 +97,7 @@ async def system_log_tool(config:SystemLogToolConfig, builder: Builder):
 
             #CAll the tool for get system log 
             log_from_vm = await get_live_system_logs(lasttime)
-            print(log_from_vm)
+            logger.info(log_from_vm)
 
             output_for_prompt = f"Here the system log retreived at {current_time}. Here the log: {log_from_vm}"
 
@@ -115,7 +115,7 @@ async def system_log_tool(config:SystemLogToolConfig, builder: Builder):
         
             chain = prompt | llm
             result = await chain.ainvoke({"msgs": [HumanMessage(content=user_prompt)]})
-            logger.debug(result.content)
+            logger.info(result.content)
 
             return result.content
         except Exception as e:

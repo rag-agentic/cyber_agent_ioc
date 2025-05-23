@@ -94,7 +94,7 @@ async def network_log_tool(config:NetworkLogToolConfig, builder: Builder):
 
             #CAll the tool for get system log 
             network_traffic = await get_live_network_traffic(config.interface,config.ct_packet, config.timeout)
-            logger.debug(network_traffic)
+            logger.info(network_traffic)
 
             output_for_prompt = f"Here the network traffic captured at {current_time}. Here the log: {network_traffic}"
 
@@ -105,7 +105,7 @@ async def network_log_tool(config:NetworkLogToolConfig, builder: Builder):
         
             chain = prompt | llm
             result = await chain.ainvoke({"msgs": [HumanMessage(content=user_prompt)]})
-            logger.debug(result.content)
+            logger.info(result.content)
 
             return result.content
         except Exception as e:

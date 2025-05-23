@@ -90,7 +90,7 @@ async def process_log_tool(config:ProcessLogToolConfig, builder: Builder):
 
             #CAll the tool for get system log 
             list_process = await get_live_process_monitor(config.timeout,config.filter)
-            logger.debug(list_process)
+            logger.info(list_process)
 
             output_for_prompt = f"Here the process running at {current_time}. Here the log: {list_process}"
 
@@ -101,7 +101,7 @@ async def process_log_tool(config:ProcessLogToolConfig, builder: Builder):
         
             chain = prompt | llm
             result = await chain.ainvoke({"msgs": [HumanMessage(content=user_prompt)]})
-            logger.debug(result.content)
+            logger.info(result.content)
 
             return result.content
         except Exception as e:

@@ -89,7 +89,7 @@ async def dns_log_tool(config:DnsLogToolConfig, builder: Builder):
 
             #CAll the tool for get system log 
             dns_traffic = await get_live_dns_traffic(config.timeout)
-            logger.debug(dns_traffic)
+            logger.info(dns_traffic)
 
             output_for_prompt = f"Here the dns traffic captured at {current_time}. Here the log: {dns_traffic}"
 
@@ -100,7 +100,7 @@ async def dns_log_tool(config:DnsLogToolConfig, builder: Builder):
         
             chain = prompt | llm
             result = await chain.ainvoke({"msgs": [HumanMessage(content=user_prompt)]})
-            logger.debug(result.content)
+            logger.info(result.content)
 
             return result.content
         except Exception as e:

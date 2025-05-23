@@ -133,8 +133,8 @@ def run_cmd_vm_timeout(cmd, timeout=5):
         # On lit le reste du buffer
         output += proc.stdout.read()
         stderr = proc.stderr.read()
-        if stderr:
-            logger.error("Error : %s", stderr)
+        #if stderr:
+        #    logger.error("Error : %s", stderr)
         stdout_limited = limit_stdout_for_llm(output, max_chars=nb_chars)
         return stdout_limited
     except Exception as e:
@@ -244,7 +244,7 @@ def get_data_tmp_file_txt(local_path):
         logger.debug(f"data :\n{data}")
 
 async def get_live_network_traffic(interface="en0", ct_packet=1, timeout=5):
-    tcpdump_cmd = f"sudo tcpdump -l -nnni {interface} not port 22 -c {ct_packet}"
+    tcpdump_cmd = f"sudo tcpdump -l -v -nnni {interface} not port 22 -c {ct_packet}"
     result = run_cmd_vm(tcpdump_cmd, timeout=10)
     await asyncio.sleep(timeout)
     return result
@@ -273,7 +273,7 @@ async def get_live_process_monitor(timeout=7, filter=""):
         )
     else:
         process_monitor_cmd = (
-            "sudo /Applications/ProcessMonitor.app/Contents/MacOS/ProcessMonitor --pretty"
+            "sudo /Applications/ProcessMonitor.app/Contents/MacOS/ProcessMonitor"
         )
     result = run_cmd_vm_timeout(process_monitor_cmd, timeout=timeout)
     return result

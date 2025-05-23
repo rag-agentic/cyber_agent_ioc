@@ -27,31 +27,29 @@ general:
       console:
         _type: console
         level: INFO
-
-  
 functions:
   system_log_tool:
     _type: system_log_tool
-    llm_name: tool_reasoning_llm
+    llm_name: nim_llm
     description: "Search for indice of compromission in system log running on Macos 15.4.1"
-    last_n: 3
+    last_n: 10
   process_log_tool:
     _type: process_log_tool
-    llm_name: tool_reasoning_llm
+    llm_name: nim_llm
     description: "Search for indice of compromission in list of process running on Macos 15.4.1"
-    timeout: 6
+    timeout: 9
     filter: ""
   network_log_tool:
     _type: network_log_tool
-    llm_name: tool_reasoning_llm
+    llm_name: nim_llm
     description: "Search for indice of compromission in network list running on Macos 15.4.1"
-    interface: em0
-    ct_packet: 10
+    interface: en0
+    ct_packet: 50
     timeout: 5
   dns_log_tool:
      _type: dns_log_tool
-     llm_name: tool_reasoning_llm
-     timeout: 5
+     llm_name: nim_llm
+     timeout: 7
   analyze_tool:
     _type: analyze_tool
     llm_name: tool_reasoning_llm
@@ -61,14 +59,14 @@ llms:
   nim_llm:
     _type: nim
     model_name: nvidia/llama-3.1-nemotron-ultra-253b-v1
-    temperature: 0.6
-    max_tokens: 2048
+    temperature: 0.1
+    max_tokens: 5000
 
   tool_reasoning_llm:
     _type: nim
     model_name: nvidia/llama-3.1-nemotron-ultra-253b-v1
     temperature: 0.2
-    max_tokens: 2048
+    max_tokens: 10000
 
 workflow:
   _type: cyber_agent_ioc
