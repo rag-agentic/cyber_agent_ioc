@@ -1,6 +1,6 @@
 #CyberAgentIOC ##NVIDIAHackathon #AI
 
-## Cyber agent for detecting very small Indice Of Compromission on macos system
+# Cyber agent for detecting very small Indice Of Compromission on macos system
 
 Cyber agent for detecting very small Indicators Of Compromise on macOS systems
 
@@ -14,7 +14,7 @@ Here, this is just a POC (Proof Of Concept), showing that AI agents, by collabor
 ![Overview of Cyber Agent IOC](img/overview.png "Overview of Cyber Agent IOC").
 
 
-### How to install 
+## How to install 
 
 This is a project that uses the UV tool and the LUME tool on macOS, which will launch the macOS VM.
 You can use it with the Pylume tool, together with the Tua computer tool from your GitHub link.
@@ -54,9 +54,10 @@ uv pip install  ./src/cyber_agent_ioc/''
 On the VM, you need to install the following tools: tcpdump, ProcessMonitor, and DNSMonitor.
 ```
 
-### TODO LIST
+## TODO LIST
 
-- Sometimes, the model hallucinates and shows false positive IOCs.
+- Approximately 70% of the time, the model hallucinates and reports false positive IOCs. We should experiment with other parameters (such as further lowering temperature, adjusting top-k/top-p, or refining prompts) to reduce this behavior.
+- Enhance the tools and command-line interfaces to provide more reliable and informative outputs.
 - On a VM, additional tools such as DTrace/dtruss can be used to monitor and analyze system behavior.
 - Create an isolated VM from a network perspective, and run malware to test whether the model can detect malicious activities.
 - Add an MCP client to query the VirusTotal service and interact with the MCP VirusTotal server.
@@ -65,9 +66,7 @@ On the VM, you need to install the following tools: tcpdump, ProcessMonitor, and
 - Use tools other than SSH, such as establishing a global session with the Computer tool. Note that launching the VM can be time-consuming, or the VM must remain running even when the agent is stopped.
 - Integrate AI agents from the [c/ua](https://github.com/trycua/) project to enable collaborative analysis.
 
-### Result
-
-```
+## Example of output
 
 **Report:**
 
@@ -161,4 +160,4 @@ The analyzed logs, retrieved using `process_log_tool(timeout=5, filter="")` to c
 **End of Report**
 Finished agent execution
 
-```
+
